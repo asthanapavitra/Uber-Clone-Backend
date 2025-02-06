@@ -162,3 +162,74 @@ This endpoint is used to log in an existing user. It requires the user's email a
     "message": "Incorrect email or password"
   }
   ```
+
+# User Profile Endpoint Documentation
+
+## Endpoint: `/users/profile`
+
+### Method: GET
+
+### Description:
+
+This endpoint is used to get the profile of the logged-in user. It requires the user to be authenticated.
+
+### Responses:
+
+#### Success (200):
+
+- **Description**: User profile retrieved successfully.
+- **Example Response**:
+  ```json
+  {
+    "user": {
+      "_id": "60c72b2f9b1e8b001c8e4d5a",
+      "fullName": {
+        "firstName": "John",
+        "lastName": "Doe"
+      },
+      "email": "john.doe@example.com"
+    }
+  }
+  ```
+
+#### Unauthorized (401):
+
+- **Description**: User is not authenticated.
+- **Example Response**:
+  ```json
+  {
+    "message": "Unauthorized Access, please login"
+  }
+  ```
+
+# User Logout Endpoint Documentation
+
+## Endpoint: `/users/logout`
+
+### Method: GET
+
+### Description:
+
+This endpoint is used to log out the authenticated user. It requires the user to be authenticated.
+
+### Responses:
+
+#### Success (200):
+
+- **Description**: User successfully logged out.
+- **Example Response**:
+  ```json
+  {
+    "message": "User logout successfully"
+  }
+  ```
+
+#### Unauthorized (401):
+
+- **Description**: User is not authenticated.
+- **Example Response**:
+  ```json
+  {
+    "message": "Unauthorized Access, please login"
+  }
+  ```
