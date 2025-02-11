@@ -236,7 +236,7 @@ This endpoint is used to log out the authenticated user. It requires the user to
 
 # Captain Registration Endpoint Documentation
 
-## Endpoint: `/captain/register`
+## Endpoint: `/captains/register`
 
 ### Method: POST
 
@@ -359,5 +359,179 @@ This endpoint is used to register a new captain. It requires the captain's perso
   ```json
   {
     "error": "All the fields are required"
+  }
+  ```
+
+# Captain Login Endpoint Documentation
+
+## Endpoint: `/captains/login`
+
+### Method: POST
+
+### Description:
+
+This endpoint is used to log in an existing captain. It requires the captain's email and password.
+
+### Required Data:
+
+- `email` (string): The email address of the captain. Must be a valid email format.
+- `password` (string): The password for the captain account. Must be at least 6 characters long.
+
+### Example Request Body:
+
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Responses:
+
+#### Success (201):
+
+- **Description**: Captain successfully logged in.
+- **Example Response**:
+  ```json
+  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "captain": {
+      "_id": "60c72b2f9b1e8b001c8e4d5a",
+      "fullName": {
+        "firstName": "John",
+        "lastName": "Doe"
+      },
+      "email": "john.doe@example.com",
+      "status": "inactive",
+      "vehicle": {
+        "color": "black",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+#### Validation Error (400):
+
+- **Description**: One or more fields are invalid.
+- **Example Response**:
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Invalid Email",
+        "param": "email",
+        "location": "body"
+      },
+      {
+        "msg": "Password must be atleast 6 characters long",
+        "param": "password",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+#### Incorrect Credentials (401):
+
+- **Description**: The email or password is incorrect.
+- **Example Response**:
+  ```json
+  {
+    "error": "Email or password incorrect"
+  }
+  ```
+
+# Captain Profile Endpoint Documentation
+
+## Endpoint: `/captains/getProfile`
+
+### Method: GET
+
+### Description:
+
+This endpoint is used to get the profile of the logged-in captain. It requires authentication via token.
+
+### Authentication:
+
+Requires a valid JWT token in either:
+
+- Cookie named "token"
+- Authorization header as "Bearer <token>"
+
+### Responses:
+
+#### Success (200):
+
+- **Description**: Captain profile retrieved successfully.
+- **Example Response**:
+  ```json
+  {
+    "captain": {
+      "_id": "60c72b2f9b1e8b001c8e4d5a",
+      "fullName": {
+        "firstName": "John",
+        "lastName": "Doe"
+      },
+      "email": "john.doe@example.com",
+      "status": "inactive",
+      "vehicle": {
+        "color": "black",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+#### Unauthorized (401):
+
+- **Description**: Captain is not authenticated.
+- **Example Response**:
+  ```json
+  {
+    "error": "Please login to access this resource"
+  }
+  ```
+
+# Captain Logout Endpoint Documentation
+
+## Endpoint: `/captains/logout`
+
+### Method: GET
+
+### Description:
+
+This endpoint is used to log out the authenticated captain. It requires authentication and blacklists the current token.
+
+### Authentication:
+
+Requires a valid JWT token in either:
+
+- Cookie named "token"
+- Authorization header as "Bearer <token>"
+
+### Responses:
+
+#### Success (200):
+
+- **Description**: Captain successfully logged out.
+- **Example Response**:
+  ```json
+  {
+    "message": "Captain logout successfully"
+  }
+  ```
+
+#### Unauthorized (401):
+
+- **Description**: Captain is not authenticated.
+- **Example Response**:
+  ```json
+  {
+    "error": "Please login to access this resource"
   }
   ```

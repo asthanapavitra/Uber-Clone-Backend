@@ -27,3 +27,18 @@ module.exports.createCaptain=async function({
     
     return ({token,captain});
 }
+module.exports.checkCaptain=async({email,password})=>{
+    if(!email||!password){
+        throw new Error("All the fields are required");
+    }
+    let captain=await captainModel.findOne({email}).select('+password');
+    if(!captain){
+        throw new Error("Email or password incorrect");
+    }
+    let isMatched=await captain.comparePassword(password);
+    if(!isMatched){
+        throw new Error("Email or password incorrect");
+    }
+    const token=captain.generateAuthToken();
+    return {token,captain};
+}

@@ -15,5 +15,5 @@ app.use(express.urlencoded({extended:true}));
 
 
 app.use('/users',userRouter);
-app.use('/captain',captainRouter);
+app.use('/captains',captainRouter);
 module.exports=app;

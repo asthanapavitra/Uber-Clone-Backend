@@ -21,3 +21,18 @@ module.exports.createUser=async function({
     const token=user.generateAuthToken();
     return {token,user} ;
 }
+module.exports.checkUser=async({email,password})=>{
+    if(!email||!password){
+        throw new Error("All the fields are required");
+    }
+    let user=await userModel.findOne({email}).select('+password');
+    if(!user){
+        throw new Error("Email or password incorrect");
+    }
+    let isMatched=await user.comparePassword(password);
+    if(!isMatched){
+        throw new Error("Email or password incorrect");
+    }
+    const token=user.generateAuthToken();
+    return {token,user};
+}
