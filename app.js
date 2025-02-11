@@ -4,7 +4,7 @@ const cors=require('cors');
 const express=require('express');
 const cookie=require('cookie-parser');
 const userRouter=require('./routes/userRouter');
-
+const captainRouter=require('./routes/captainRouter')
 const db=require('./config/mongoose-connection')
 const app=express();
 app.use(cookie());
@@ -15,4 +15,5 @@ app.use(express.urlencoded({extended:true}));
 
 
 app.use('/users',userRouter);
+app.use('/captain',captainRouter);
 module.exports=app;

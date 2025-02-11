@@ -233,3 +233,131 @@ This endpoint is used to log out the authenticated user. It requires the user to
     "message": "Unauthorized Access, please login"
   }
   ```
+
+# Captain Registration Endpoint Documentation
+
+## Endpoint: `/captain/register`
+
+### Method: POST
+
+### Description:
+
+This endpoint is used to register a new captain. It requires the captain's personal details and vehicle information.
+
+### Required Data:
+
+- `fullName.firstName` (string): The first name of the captain. Must be at least 3 characters long.
+- `fullName.lastName` (string): The last name of the captain (optional).
+- `email` (string): The email address of the captain. Must be a valid email format.
+- `password` (string): The password for the captain account. Must be at least 6 characters long.
+- `vehicle.color` (string): The color of the vehicle. Must be at least 3 characters long.
+- `vehicle.plate` (string): The license plate number. Must be at least 3 characters long.
+- `vehicle.capacity` (number): The passenger capacity including driver. Must be at least 2.
+- `vehicle.vehicleType` (string): The type of vehicle. Must be one of: "car", "motorcycle", "auto".
+
+### Example Request Body:
+
+```json
+{
+  "fullName": {
+    "firstName": "John",
+    "lastName": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "black",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Responses:
+
+#### Success (201):
+
+- **Description**: Captain successfully registered.
+- **Example Response**:
+  ```json
+  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "captain": {
+      "_id": "60c72b2f9b1e8b001c8e4d5a",
+      "fullName": {
+        "firstName": "John",
+        "lastName": "Doe"
+      },
+      "email": "john.doe@example.com",
+      "status": "inactive",
+      "vehicle": {
+        "color": "black",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+#### Validation Error (400):
+
+- **Description**: One or more fields are invalid.
+- **Example Response**:
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Invalid Email",
+        "param": "email",
+        "location": "body"
+      },
+      {
+        "msg": "Firstname must be atleast 3 characters long",
+        "param": "fullName.firstName",
+        "location": "body"
+      },
+      {
+        "msg": "Color must be atleast 3 characters long",
+        "param": "vehicle.color",
+        "location": "body"
+      },
+      {
+        "msg": "Plate number must be atleast 3 characters long",
+        "param": "vehicle.plate",
+        "location": "body"
+      },
+      {
+        "msg": "Capacity must be atleast 2 including driver",
+        "param": "vehicle.capacity",
+        "location": "body"
+      },
+      {
+        "msg": "Invalid vehicle Type",
+        "param": "vehicle.vehicleType",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+#### Email Already Exists (401):
+
+- **Description**: Captain with this email already exists.
+- **Example Response**:
+  ```json
+  {
+    "error": "Email or password incorrect"
+  }
+  ```
+
+#### Missing Fields (401):
+
+- **Description**: Required fields are missing.
+- **Example Response**:
+  ```json
+  {
+    "error": "All the fields are required"
+  }
+  ```
